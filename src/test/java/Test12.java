@@ -27,7 +27,7 @@ public class Test12 {
         capabilities.setVersion("90.0");
 
          driver = new RemoteWebDriver(
-                URI.create("http://localhost:4444/wd/hub/").toURL(),
+                URI.create("http://192.168.0.145:4444/wd/hub/").toURL(),
                 capabilities
         );
         driver.manage().window().setSize(new Dimension(1920,1024));
