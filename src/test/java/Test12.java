@@ -1,11 +1,4 @@
-package edosf.iitFirefox.login8077;
-
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.WebDriverRunner;
-import edosf.methods.Cabinet;
-import edosf.methods.Check;
-import edosf.methods.EnterAndExit;
-import edosf.settingsEdo.Iit8077;
 import io.qameta.allure.Issue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +13,10 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.io.IOException;
 import java.net.URI;
 
-public class Test12 implements Iit8077 {
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+public class Test12 {
     public WebDriver driver;
     public String checking;
     @BeforeEach
@@ -43,13 +39,28 @@ public class Test12 implements Iit8077 {
     @DisplayName("Открываем сщуствующую Issue")
     public void testIssue() {
         try {
-            driver.get(URL);
-            EnterAndExit.LogPass(LOG1LOG, PASS, driver);
+            driver.get("http://10.48.0.13/auth?error=noauth");
+            Thread.sleep(200);
+            driver.findElement(By.xpath("//*[@id=\"username-login\"]")).sendKeys("100");
+            Thread.sleep(200);
+            driver.findElement(By.xpath("//*[@id=\"passwordfield\"]")).sendKeys("123");
+            Thread.sleep(200);
+            driver.findElement(By.className("auth__button")).click();
+            Thread.sleep(2000);
             checking = driver.findElement(By.className("auth__button")).getText();
             System.out.println(checking);
-            Check.CheckExit("Выбрать", checking, driver);
+            if (checking.equals("Выбрать")) {
+                System.out.println("Test is Successful");
+                driver.quit();
+                assertTrue(true);
+            } else {
+                driver.quit();
+                fail("Test is Failing.");
+            }
+
         } catch (Throwable e) {
-            Cabinet.Catch(driver, e);
+            e.printStackTrace();
+            driver.quit();
         }
     }
 
